@@ -1,2 +1,3 @@
-the same example in many languages<br />
-for fun : )
+The same programming example implemented in as many languages as I can remember.
+
+:)
