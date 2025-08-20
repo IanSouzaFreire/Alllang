@@ -1,0 +1,75 @@
+// Onyx
+
+use core {*}
+
+Vec2 :: struct { x: f64; y: f64 }
+
+Vec2.add :: (self: ^Vec2, other: Vec2) -> () {
+    self.x = self.x + other.x
+    self.y = self.y + other.y
+}
+
+Vec2.scale :: (self: Vec2, scalar: f64) -> Vec2 {
+    return Vec2 { x: self.x * scalar; y: self.y * scalar }
+}
+
+Size :: struct { width: f64; height: f64 }
+
+GameObject :: struct { position: Vec2; size: Size }
+
+GameObject.horizontal_collision :: (self: GameObject, other: GameObject) -> bool {
+    return (other.position.x < self.position.x + self.size.width)
+           && (other.position.x + other.size.width > self.position.x)
+}
+
+GameObject.vertical_collision :: (self: GameObject, other: GameObject) -> bool {
+    return (other.position.y < self.position.y + self.size.height)
+           && (other.position.y + other.size.height > self.position.y)
+}
+
+GameObject.collide :: (self: GameObject, other: GameObject) -> bool {
+    return self.horizontal_collision(other) && self.vertical_collision(other)
+}
+
+MovableObject :: struct {
+    position: Vec2;
+    size: Size;
+    velocity: Vec2;
+    acceleration: Vec2;
+}
+
+MovableObject.update :: (self: ^MovableObject, delta_time: f64) -> () {
+    temp := self.acceleration.scale(delta_time)
+    self.velocity.add(temp)
+    temp2 := self.velocity.scale(delta_time)
+    self.position.add(temp2)
+}
+
+Car :: struct {
+    position: Vec2;
+    size: Size;
+    velocity: Vec2;
+    acceleration: Vec2;
+    turn_angle: f64;
+}
+
+Car.turn :: (self: ^Car, angle: f64) -> () {
+    self.turn_angle = self.turn_angle + angle
+}
+
+Car.update :: (self: ^Car, delta_time: f64) -> () {
+    # Reuse MovableObject.update logic
+    movable_view := MovableObject {
+        position: self.position;
+        size: self.size;
+        velocity: self.velocity;
+        acceleration: self.acceleration;
+    }
+    movable_view_ref := &movable_view
+    MovableObject.update(movable_view_ref, delta_time)
+    # Reflect updated mutable fields back into self
+    self.position = movable_view.position
+    self.velocity = movable_view.velocity
+    self.acceleration = movable_view.acceleration
+    # turn_angle remains unchanged
+}

@@ -1,0 +1,87 @@
+/* JS++ */
+
+class Vec2 {
+  double x;
+  double y;
+
+  constructor(double X, double Y) {
+      this.x = X;
+      this.y = Y;
+  }
+
+  add(Vec2 other) {
+      this.x += other.x;
+      this.y += other.y;
+  }
+
+  scale(double scalar) {
+      return new Vec2(this.x * scalar, this.y * scalar);
+  }
+}
+
+class Size {
+  double width;
+  double height;
+
+  constructor(double w, double h) {
+      this.width = w;
+      this.height = h;
+  }
+}
+
+class GameObject {
+  Vec2 position;
+  Size size;
+
+  constructor(Vec2 position, Size size) {
+      this.position = position;
+      this.size = size;
+  }
+
+  bool horizontalCollision(GameObject other) {
+      return other.position.x < this.position.x + this.size.width &&
+             other.position.x + other.size.width > this.position.x;
+  }
+
+  bool verticalCollision(GameObject other) {
+      return other.position.y < this.position.y + this.size.height &&
+             other.position.y + other.size.height > this.position.y;
+  }
+
+  bool collide(GameObject other) {
+      return this.horizontalCollision(other) && this.verticalCollision(other);
+  }
+}
+
+class MovableObject : GameObject {
+  Vec2 velocity;
+  Vec2 acceleration;
+
+  constructor(Vec2 position, Size size, Vec2 velocity, Vec2 acceleration) {
+      super(position, size);
+      this.velocity = velocity;
+      this.acceleration = acceleration;
+  }
+
+  update(double deltaTime) {
+      this.velocity.add(this.acceleration.scale(deltaTime));
+      this.position.add(this.velocity.scale(deltaTime));
+  }
+}
+
+class Car : MovableObject {
+  double turnAngle;
+
+  constructor(Vec2 position, Size size, Vec2 velocity, Vec2 acceleration, double turnAngle) {
+      super(position, size, velocity, acceleration);
+      this.turnAngle = turnAngle;
+  }
+
+  turn(double angle) {
+      this.turnAngle += angle;
+  }
+
+  update(double deltaTime) {
+      super.update(deltaTime);
+  }
+}

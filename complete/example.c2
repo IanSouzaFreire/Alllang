@@ -1,0 +1,98 @@
+// C2
+
+struct Vec2 {
+  f64 x;
+  f64 y;
+
+  public:
+  func Vec2(f64 X, f64 Y) {
+    this.x = X;
+    this.y = Y;
+  }
+
+  func void add(Vec2 other) {
+    this.x += other.x;
+    this.y += other.y;
+  }
+
+  func void scale(f64 scalar) {
+    this.x *= scalar;
+    this.y *= scalar;
+  }
+};
+
+struct Size {
+  f64 width;
+  f64 height;
+
+  public:
+  func Size(f64 w, f64 h) {
+    this.width = w;
+    this.height = h;
+  }
+};
+
+struct GameObject {
+  Vec2 position;
+  Size size;
+
+  public:
+  func GameObject(Vec2 position, Size size) {
+    this.position = position;
+    this.size = size;
+  }
+
+  func bool horizontalCollision(GameObject other) {
+    return (other.position.x < this.position.x + this.size.width &&
+            other.position.x + other.size.width > this.position.x);
+  }
+
+  func bool verticalCollision(GameObject other) {
+    return (other.position.y < this.position.y + this.size.height &&
+            other.position.y + other.size.height > this.position.y);
+  }
+
+  func bool collide(GameObject other) {
+    return this.horizontalCollision(other) && this.verticalCollision(other);
+  }
+};
+
+struct MovableObject : GameObject {
+  Vec2 velocity;
+  Vec2 acceleration;
+
+  public:
+  func MovableObject(Vec2 position, Size size, Vec2 velocity, Vec2 acceleration) {
+    super(position, size);
+    this.velocity = velocity;
+    this.acceleration = acceleration;
+  }
+
+  func void update(f64 deltaTime) {
+    Vec2 scaledAcc = this.acceleration;
+    scaledAcc.scale(deltaTime);
+    this.velocity.add(scaledAcc);
+
+    Vec2 scaledVel = this.velocity;
+    scaledVel.scale(deltaTime);
+    this.position.add(scaledVel);
+  }
+};
+
+struct Car : MovableObject {
+  f64 turnAngle;
+
+  public:
+  func Car(Vec2 position, Size size, Vec2 velocity, Vec2 acceleration, f64 turnAngle) {
+    super(position, size, velocity, acceleration);
+    this.turnAngle = turnAngle;
+  }
+
+  func void turn(f64 angle) {
+    this.turnAngle += angle;
+  }
+
+  func void update(f64 deltaTime) {
+    super.update(deltaTime);
+  }
+};

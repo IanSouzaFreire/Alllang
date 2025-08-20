@@ -1,0 +1,72 @@
+# Mojo
+
+struct Vec2:
+    var x: Float64
+    var y: Float64
+
+    fn __init__(out self, X: Float64, Y: Float64):
+        self.x = X
+        self.y = Y
+
+    fn add(out self, other: Vec2):
+        self.x += other.x
+        self.y += other.y
+
+    fn scale(out self, scalar: Float64):
+        self.x *= scalar
+        self.y *= scalar
+
+struct Size:
+    var width: Float64
+    var height: Float64
+
+    fn __init__(out self, w: Float64, h: Float64):
+        self.width = w
+        self.height = h
+
+struct GameObject:
+    var position: Vec2
+    var size: Size
+
+    fn __init__(out self, position: Vec2, size: Size):
+        self.position = position
+        self.size = size
+
+    fn horizontalCollision(self, other: GameObject) -> Bool:
+        return (other.position.x < self.position.x + self.size.width and
+                other.position.x + other.size.width > self.position.x)
+
+    fn verticalCollision(self, other: GameObject) -> Bool:
+        return (other.position.y < self.position.y + self.size.height and
+                other.position.y + other.size.height > self.position.y)
+
+    fn collide(self, other: GameObject) -> Bool:
+        return self.horizontalCollision(other) and self.verticalCollision(other)
+
+struct MovableObject(GameObject):
+    var velocity: Vec2
+    var acceleration: Vec2
+
+    fn __init__(out self, position: Vec2, size: Size, velocity: Vec2, acceleration: Vec2):
+        super.__init__(position, size)
+        self.velocity = velocity
+        self.acceleration = acceleration
+
+    fn update(out self, deltaTime: Float64) noexcept:
+        self.velocity.scale(deltaTime)
+        self.velocity.add(self.acceleration)
+        self.position.scale(deltaTime)
+        self.position.add(self.velocity)
+
+struct Car(MovableObject):
+    var turnAngle: Float64
+
+    fn __init__(out self, position: Vec2, size: Size, velocity: Vec2, acceleration: Vec2, turnAngle: Float64):
+        super.__init__(position, size, velocity, acceleration)
+        self.turnAngle = turnAngle
+
+    fn turn(out self, angle: Float64):
+        self.turnAngle += angle
+
+    fn update(out self, deltaTime: Float64):
+        super.update(deltaTime)
