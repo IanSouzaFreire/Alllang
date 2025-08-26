@@ -11,16 +11,18 @@ public struct Vec2
     y = Y;
   }
 
-  public void Add(Vec2 other)
+  public Vec2 Add(Vec2 other)
   {
     this.x += other.x;
     this.y += other.y;
+    return this;
   }
 
-  public void Scale(double scalar)
+  public Vec2 Scale(double scalar)
   {
     this.x *= scalar;
     this.y *= scalar;
+    return this;
   }
 }
 
