@@ -1,5 +1,7 @@
 // F#
 
+module Example
+
 type Vec2(x: float, y: float) =
   member val X = x with get, set
   member val Y = y with get, set
@@ -7,10 +9,12 @@ type Vec2(x: float, y: float) =
   member this.Add(other: Vec2) =
     this.X <- this.X + other.X
     this.Y <- this.Y + other.Y
+    this
 
   member this.Scale(scalar: float) =
     this.X <- this.X * scalar
     this.Y <- this.Y * scalar
+    this
 
 type Size(width: float, height: float) =
   member val Width = width with get, set
@@ -37,7 +41,7 @@ type MovableObject(position: Vec2, size: Size, velocity: Vec2, acceleration: Vec
   member val Acceleration = acceleration with get, set
 
   member this.Update(deltaTime: float) =
-    this.Velocity.Add(this.Acceleration.Scale(deltaTime))
+    this.Velocity.Add(this.Acceleration.Scale(deltaTime)) |> ignore
     this.Position.Add(this.Velocity.Scale(deltaTime))
 
 type Car(position: Vec2, size: Size, velocity: Vec2, acceleration: Vec2, turnAngle: float) =
