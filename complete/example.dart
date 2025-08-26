@@ -6,14 +6,16 @@ class Vec2 {
 
   Vec2(this.x, this.y);
 
-  void add(Vec2 other) {
+  Vec2 add(Vec2 other) {
     x += other.x;
     y += other.y;
+    return this;
   }
 
-  void scale(double scalar) {
+  Vec2 scale(double scalar) {
     x *= scalar;
     y *= scalar;
+    return this;
   }
 }
 
