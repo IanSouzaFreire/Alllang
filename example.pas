@@ -1,5 +1,7 @@
 (* Pascal *)
 
+unit example;
+
 type
   TVec2 = class
   public
@@ -138,3 +140,4 @@ procedure TCar.Update(const DeltaTime: Double);
 begin
   inherited Update(DeltaTime);
 end;
+
