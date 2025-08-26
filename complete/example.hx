@@ -9,14 +9,16 @@ class Vec2 {
     this.y = Y;
   }
 
-  public function add(other:Vec2):Void {
+  public function add(other:Vec2):Vec2 {
     this.x += other.x;
     this.y += other.y;
+    return this;
   }
 
-  public function scale(scalar:Float):Void {
+  public function scale(scalar:Float):Vec2 {
     this.x *= scalar;
     this.y *= scalar;
+    return this;
   }
 }
 
@@ -85,4 +87,5 @@ class Car extends MovableObject {
   public function update(deltaTime:Float):Void {
     super.update(deltaTime);
   }
+
 }
