@@ -1,6 +1,6 @@
 %% Erlang
 
--module(game_sim).
+-module(example).
 -export([
     new_vec2/2, add_vec2/2, scale_vec2/2,
     new_size/2,
@@ -60,3 +60,4 @@ update_car({car, Pos, Size, Vel, Acc, Angle}, DeltaTime) ->
     {movable_object, NewPos, NewSize, NewVel, NewAcc} =
         update_movable({movable_object, Pos, Size, Vel, Acc}, DeltaTime),
     {car, NewPos, NewSize, NewVel, NewAcc, Angle}.
+
