@@ -8,14 +8,16 @@ struct Vec2 {
   __host__ __device__ Vec2(double X, double Y) noexcept
     : x(X), y(Y) {}
 
-  __host__ __device__ void add(const Vec2& other) noexcept {
+  __host__ __device__ Vec2& add(const Vec2& other) noexcept {
     x += other.x;
     y += other.y;
+    return *this;
   }
 
-  __host__ __device__ void scale(double scalar) noexcept {
+  __host__ __device__ Vec2& scale(double scalar) noexcept {
     x *= scalar;
     y *= scalar;
+    return *this;
   }
 };
 
