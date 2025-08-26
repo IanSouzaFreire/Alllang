@@ -1,4 +1,4 @@
-// Haskell
+-- Haskell
 
 data Vec2 = Vec2 { x :: Double, y :: Double } deriving (Show)
 
