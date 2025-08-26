@@ -39,7 +39,7 @@ open class MovableObject(
   val acceleration: Vec2
 ) : GameObject(position, size) {
 
-  fun update(deltaTime: Double) {
+  open fun update(deltaTime: Double) {
     velocity.add(acceleration.copy().scale(deltaTime))
     position.add(velocity.copy().scale(deltaTime))
   }
