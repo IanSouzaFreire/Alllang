@@ -1,4 +1,4 @@
-// Go
+// Golang
 
 package main
 
@@ -10,14 +10,16 @@ func NewVec2(X, Y float64) Vec2 {
 	return Vec2{x: X, y: Y}
 }
 
-func (v *Vec2) Add(other Vec2) {
+func (v *Vec2) Add(other Vec2) Vec2 {
 	v.x += other.x
 	v.y += other.y
+    return *v
 }
 
-func (v *Vec2) Scale(scalar float64) {
+func (v *Vec2) Scale(scalar float64) Vec2 {
 	v.x *= scalar
 	v.y *= scalar
+    return *v
 }
 
 type Size struct {
@@ -66,8 +68,8 @@ func NewMovableObject(position Vec2, size Size, velocity Vec2, acceleration Vec2
 }
 
 func (m *MovableObject) Update(deltaTime float64) {
-	m.velocity.Add(m.acceleration.Scale(deltaTime))
-	m.position.Add(m.velocity.Scale(deltaTime))
+	_ = m.velocity.Add(m.acceleration.Scale(deltaTime))
+	_ = m.position.Add(m.velocity.Scale(deltaTime))
 }
 
 type Car struct {
