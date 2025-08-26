@@ -1,4 +1,4 @@
-// Nim
+# Nim
 
 type
   Vec2 = object
@@ -27,13 +27,15 @@ proc newVec2(x, y: float64): Vec2 =
   result.x = x
   result.y = y
 
-proc add(self: var Vec2, other: Vec2) =
+proc add(self: var Vec2, other: Vec2): Vec2 =
   self.x += other.x
   self.y += other.y
+  return self
 
-proc scale(self: var Vec2, scalar: float64) =
+proc scale(self: var Vec2, scalar: float64): Vec2 =
   self.x *= scalar
   self.y *= scalar
+  return self
 
 # Size methods
 proc newSize(width, height: float64): Size =
@@ -63,8 +65,8 @@ proc newMovableObject(position: Vec2, size: Size, velocity: Vec2, acceleration: 
   result.acceleration = acceleration
 
 proc update(self: var MovableObject, deltaTime: float64) =
-  self.velocity.add(self.acceleration.scale(deltaTime))
-  self.gameObject.position.add(self.velocity.scale(deltaTime))
+  discard self.velocity.add(self.acceleration.scale(deltaTime))
+  discard self.gameObject.position.add(self.velocity.scale(deltaTime))
 
 # Car methods
 proc newCar(position: Vec2, size: Size, velocity: Vec2, acceleration: Vec2, turnAngle: float64): Car =
